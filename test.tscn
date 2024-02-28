@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpk5aw81fio42"]
+
+[ext_resource type="Script" path="res://FPSTracker.gd" id="3_iegcv"]
+[ext_resource type="PackedScene" uid="uid://bv1i7q8bxfe2c" path="res://player/player.tscn" id="5_0664i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_860qe"]
+size = Vector2(195, 295)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qn5x5"]
+size = Vector2(126, 131.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0th2j"]
+size = Vector2(200, 150)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1d8s5"]
+size = Vector2(200, 200)
+
+[node name="World" type="Node2D"]
+
+[node name="Level" type="Node" parent="."]
+
+[node name="Area2D" type="Area2D" parent="Level"]
+position = Vector2(671, -70)
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Area2D"]
+shape = SubResource("RectangleShape2D_860qe")
+
+[node name="CharacterBody2D" type="StaticBody2D" parent="Level"]
+position = Vector2(659, 314)
+scale = Vector2(1, 2)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/CharacterBody2D"]
+position = Vector2(4, -1.75)
+shape = SubResource("RectangleShape2D_qn5x5")
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="Level"]
+position = Vector2(60, 369)
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/CharacterBody2D2"]
+shape = SubResource("RectangleShape2D_0th2j")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="Level"]
+position = Vector2(165, -234)
+collision_layer = 4
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/RigidBody2D"]
+shape = SubResource("RectangleShape2D_1d8s5")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(346, 72)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Player" parent="." instance=ExtResource("5_0664i")]
+position = Vector2(12, 22)
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_iegcv")
+
+[node name="BoxContainer" type="VBoxContainer" parent="UI"]
+custom_minimum_size = Vector2(200, 0)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_bottom = 85.0
+grow_horizontal = 0
+
+[node name="CurrentFPS" type="Label" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "FPS::
+"
+
+[node name="LowFPS" type="Label" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "Low:
+"
+
+[node name="TrackFPSBtn" type="Button" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "Track"
+
+[node name="SaveBtn" type="Button" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "Save Data"
+
+[node name="LoadBtn" type="Button" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "Load Data"
+
+[node name="FireBtn" type="Button" parent="UI/BoxContainer"]
+layout_mode = 2
+text = "Fire Test
+"
+
+[connection signal="pressed" from="UI/BoxContainer/TrackFPSBtn" to="UI" method="_on_track_fps_button_pressed"]
+[connection signal="pressed" from="UI/BoxContainer/SaveBtn" to="UI" method="_on_save_btn_pressed"]
+[connection signal="pressed" from="UI/BoxContainer/LoadBtn" to="UI" method="_on_load_btn_pressed"]
+[connection signal="button_down" from="UI/BoxContainer/FireBtn" to="UI" method="_on_fire_btn_button_down"]
+[connection signal="button_up" from="UI/BoxContainer/FireBtn" to="UI" method="_on_fire_btn_button_up"]
